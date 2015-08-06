@@ -3,7 +3,7 @@
 User Stories:
 
 Basic Requirements:
- * [ ] enter a search query that will display a grid of image results from the Google Image API.
+ * [x] enter a search query that will display a grid of image results from the Google Image API.
  * [ ] click on "settings" which allows selection of advanced search options to filter results
  * [ ] configure advanced search filters such as:
        * Size (small, medium, large, extra-large)
@@ -11,7 +11,7 @@ Basic Requirements:
        * Type (faces, photo, clip art, line art)
        * Site (espn.com)
  * [ ] Subsequent searches will have any filters applied to the search results
- * [ ] tap on any image in results to see the image full-screen
+ * [x] tap on any image in results to see the image full-screen
  * [ ] scroll down “infinitely” to continue loading more image results (up to 8 pages)
 
 Optional Requirements:
