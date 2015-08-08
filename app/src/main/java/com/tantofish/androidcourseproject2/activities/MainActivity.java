@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tantofish.androidcourseproject2.R;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
     private EditText etQuery;
-    private GridView gvResults;
+    private StaggeredGridView gvResults;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
     private FragmentManager fm;
@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void setupViews() {
         etQuery = (EditText) findViewById(R.id.etQuery);
-        gvResults = (GridView) findViewById(R.id.gvResults);
+        gvResults = (StaggeredGridView) findViewById(R.id.gvResults);
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,13 +101,26 @@ public class MainActivity extends ActionBarActivity {
         preferenceDialog.show(fm, "preference_fragment");
         SearchFilter mSF = preferenceDialog.getSearchFilter();
         Log.d("DEBUG", "imageColor: " + mSF.getImageColor());
+        Log.d("DEBUG", "imageSize: " + mSF.getImageSize());
+        Log.d("DEBUG", "imageType: " + mSF.getImageType());
+        Log.d("DEBUG", "SearchSite: " + mSF.getSearchSite());
     }
 
     public void onImageSearch(View v) {
+        String imageColor = preferenceDialog.getSearchFilter().getImageColor();
+        String imageSize = preferenceDialog.getSearchFilter().getImageSize();
+        String imageType = preferenceDialog.getSearchFilter().getImageType();
+        String searchSite = preferenceDialog.getSearchFilter().getSearchSite();
         String query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
-        //https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=android&rsz=8
-        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query +"&rsz=8";
+
+        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query + "&rsz=8"
+                + "&imgsz=" + imageSize
+                + "&imgcolor=" + imageColor
+                + "&imgtype=" + imageType
+                + "&as_sitesearch=" + searchSite;
+
+        Log.d("DEBUG", "Search URL: " + searchUrl);
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

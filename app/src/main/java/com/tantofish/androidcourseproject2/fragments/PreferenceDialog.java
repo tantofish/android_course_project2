@@ -18,7 +18,7 @@ import com.tantofish.androidcourseproject2.models.SearchFilter;
  */
 public class PreferenceDialog extends DialogFragment {
 
-    private EditText mEditText;
+
     private Context mContext;
 
     private String[] imageSizeOptions;
@@ -28,6 +28,7 @@ public class PreferenceDialog extends DialogFragment {
     private Spinner spSize;
     private Spinner spColor;
     private Spinner spType;
+    private EditText etSite;
 
     private ArrayAdapter aaSize;
     private ArrayAdapter aaColor;
@@ -37,9 +38,9 @@ public class PreferenceDialog extends DialogFragment {
 
     public PreferenceDialog() {
         sFilter = new SearchFilter();
-        imageSizeOptions = new String[]{"small", "medium", "large", "extra-large"};
-        imageColorOptions = new String[]{"black", "white", "red", "green", "blue", "yellow", "brown", "gray", "orange", "pink", "purple", "teal"};
-        imageTypeOptions = new String[]{"face", "photo", "clipart", "lineart"};
+        imageSizeOptions = new String[]{"default", "small", "medium", "large", "extra-large"};
+        imageColorOptions = new String[]{"default", "black", "white", "red", "green", "blue", "yellow", "brown", "gray", "orange", "pink", "purple", "teal"};
+        imageTypeOptions = new String[]{"default", "face", "photo", "clipart", "lineart"};
     }
 
     public static PreferenceDialog newInstance(Context context) {
@@ -60,9 +61,10 @@ public class PreferenceDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_preference, container);
 
 
-        spSize  = (Spinner) view.findViewById(R.id.spSize);
-        spColor = (Spinner) view.findViewById(R.id.spColor);
-        spType  = (Spinner) view.findViewById(R.id.spType);
+        spSize  = (Spinner)  view.findViewById(R.id.spSize);
+        spColor = (Spinner)  view.findViewById(R.id.spColor);
+        spType  = (Spinner)  view.findViewById(R.id.spType);
+        etSite  = (EditText) view.findViewById(R.id.etSite);
 
         aaSize  = new ArrayAdapter(mContext, android.R.layout.simple_spinner_item, imageSizeOptions);
         aaColor = new ArrayAdapter(mContext, android.R.layout.simple_spinner_item, imageColorOptions);
@@ -81,9 +83,13 @@ public class PreferenceDialog extends DialogFragment {
     }
 
     public SearchFilter getSearchFilter(){
-        if(spColor != null)
-            sFilter.setImageColor(spColor.getSelectedItem().toString());
-        
+        if(spColor == null) return sFilter;
+
+        sFilter.setImageColor(spColor.getSelectedItem().toString());
+        sFilter.setImageSize(spSize.getSelectedItem().toString());
+        sFilter.setImageType(spType.getSelectedItem().toString());
+        sFilter.setSearchSite(etSite.getText().toString());
+
         return this.sFilter;
     }
 }

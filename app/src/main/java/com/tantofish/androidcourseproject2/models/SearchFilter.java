@@ -10,11 +10,27 @@ public class SearchFilter {
     private String searchSite;
 
     public SearchFilter() {
+        imageSize  = "";
+        imageColor = "";
+        imageType  = "";
+        searchSite = "";
     }
 
-
     public String getImageSize() {
-        return imageSize;
+        //do mapping
+        if(imageSize == null)   return imageSize;
+
+        if (imageSize.equals("small")) {
+            return "icon";
+        } else if (imageSize.equals("medium")) {
+            return "medium";
+        } else if (imageSize.equals("large")) {
+            return "xxlarge";
+        } else if (imageSize.equals("extra-large")) {
+            return "huge";
+        } else {
+            return "";
+        }
     }
 
     public void setImageSize(String imageSize) {
@@ -30,7 +46,7 @@ public class SearchFilter {
     }
 
     public String getImageType() {
-
+        if(imageType.equals("default")) return "";
         return imageType;
     }
 
@@ -39,7 +55,7 @@ public class SearchFilter {
     }
 
     public String getImageColor() {
-
+        if(imageColor.equals("default")) return "";
         return imageColor;
     }
 
