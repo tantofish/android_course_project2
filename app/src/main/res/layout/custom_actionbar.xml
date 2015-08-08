@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView android:id="@+id/ivLogo"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/etQuery" />
+
+    <EditText android:id="@+id/etQuery"
+        android:layout_width="182dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/ibSearch"
+        android:layout_toLeftOf="@+id/ibSearch"
+        android:layout_toRightOf="@+id/ivLogo"
+        android:layout_toEndOf="@+id/ivLogo"
+        android:hint="@string/query_hint"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#999999" />
+
+    <ImageButton android:id="@+id/ibSearch"
+        android:layout_height="match_parent"
+        android:layout_width="50dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:padding="10dp"
+        android:background="@null"
+        android:src="@drawable/ic_search"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/ibSetting"
+        android:layout_toStartOf="@+id/ibSetting"
+        android:layout_alignBottom="@+id/ibSetting"
+        android:onClick="onImageSearch" />
+
+    <ImageButton android:id="@+id/ibSetting"
+        android:layout_height="match_parent"
+        android:layout_width="50dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:padding="10dp"
+        android:background="#00000000"
+        android:src="@drawable/ic_setting"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="onSettingClick"/>
+</RelativeLayout>

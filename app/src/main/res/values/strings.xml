@@ -7,4 +7,8 @@
     <string name="search">Search</string>
     <string name="image_title_label">Image Title</string>
     <string name="title_activity_image_display">Full Image</string>
+    <string name="pref_size">Image Size</string>
+    <string name="pref_color">Image Color</string>
+    <string name="pref_type">Image Type</string>
+    <string name="pref_site">Search Site</string>
 </resources>

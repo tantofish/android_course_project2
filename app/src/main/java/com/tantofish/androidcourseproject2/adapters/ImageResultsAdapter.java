@@ -36,11 +36,13 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult>{
 
         ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+        TextView tvSize = (TextView) convertView.findViewById(R.id.tvSize);
         // clear out the image from last time
         ivImage.setImageResource(0);
         // populate title and remote download image url
         tvTitle.setText(Html.fromHtml(imageInfo.title));
 
+        tvSize.setText(imageInfo.width + "x" + imageInfo.height);
         //Transformation trans = new CropSquareTransformation();
 
         Picasso.with(getContext())

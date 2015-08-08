@@ -1,14 +1,10 @@
 package com.tantofish.androidcourseproject2.activities;
 
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import com.squareup.picasso.Transformation;
 
 import com.squareup.picasso.Picasso;
 import com.tantofish.androidcourseproject2.R;
@@ -19,11 +15,8 @@ public class ImageDisplayActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
         setContentView(R.layout.activity_image_display);
+        getSupportActionBar().hide();
 
         // PUll out the url from intent
         ImageResult result = (ImageResult) getIntent().getSerializableExtra("result");
@@ -56,6 +49,7 @@ public class ImageDisplayActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
 }

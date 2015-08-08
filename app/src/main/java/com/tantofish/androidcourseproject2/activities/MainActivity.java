@@ -3,8 +3,10 @@ package com.tantofish.androidcourseproject2.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +19,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tantofish.androidcourseproject2.R;
 import com.tantofish.androidcourseproject2.adapters.ImageResultsAdapter;
+import com.tantofish.androidcourseproject2.fragments.PreferenceDialog;
 import com.tantofish.androidcourseproject2.models.ImageResult;
+import com.tantofish.androidcourseproject2.models.SearchFilter;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -32,19 +36,39 @@ public class MainActivity extends ActionBarActivity {
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
     private ImageResultsAdapter aImageResults;
+    private FragmentManager fm;
+    private PreferenceDialog preferenceDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupViews();
+        setupActionbar();
+        setupFragments();
 
+        //showEditDialog();
         // Create the data source
         imageResults = new ArrayList<ImageResult>();
         // Attaches the data source to an adapter
         aImageResults = new ImageResultsAdapter(this, imageResults);
         // Link the adapter to the adapterview(gridview)
         gvResults.setAdapter(aImageResults);
+    }
+
+    private void setupFragments() {
+        fm = getSupportFragmentManager();
+        preferenceDialog = PreferenceDialog.newInstance(this);
+    }
+
+    private void setupActionbar() {
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        View actionbarLayout = LayoutInflater.from(this).inflate(R.layout.custom_actionbar, null);
+        getSupportActionBar().setCustomView(actionbarLayout);
+        View abView = getSupportActionBar().getCustomView();
+
+        etQuery = (EditText) abView.findViewById(R.id.etQuery);
+
     }
 
     private void setupViews() {
@@ -62,7 +86,6 @@ public class MainActivity extends ActionBarActivity {
                 i.putExtra("result", result);
                 // launch the new activity
                 startActivity(i);
-
             }
         });
     }
@@ -72,6 +95,12 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void onSettingClick(View view) {
+        preferenceDialog.show(fm, "preference_fragment");
+        SearchFilter mSF = preferenceDialog.getSearchFilter();
+        Log.d("DEBUG", "imageColor: " + mSF.getImageColor());
     }
 
     public void onImageSearch(View v) {
