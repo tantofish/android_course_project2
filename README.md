@@ -12,7 +12,7 @@ Basic Requirements:
        * Site (espn.com)
  * [x] Subsequent searches will have any filters applied to the search results
  * [x] tap on any image in results to see the image full-screen
- * [ ] scroll down “infinitely” to continue loading more image results (up to 8 pages)
+ * [x] scroll down “infinitely” to continue loading more image results (up to 8 pages)
 
 Optional Requirements:
  * [ ] Robust error handling, check if internet is available, handle error cases, network failures
