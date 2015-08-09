@@ -20,6 +20,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.tantofish.androidcourseproject2.R;
 import com.tantofish.androidcourseproject2.adapters.ImageResultsAdapter;
 import com.tantofish.androidcourseproject2.fragments.PreferenceDialog;
+import com.tantofish.androidcourseproject2.interfaces.EndlessScrollListener;
 import com.tantofish.androidcourseproject2.models.ImageResult;
 import com.tantofish.androidcourseproject2.models.SearchFilter;
 
@@ -88,6 +89,13 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
+
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                searchMore((page - 1) * 8);
+            }
+        });
     }
 
     @Override
@@ -106,21 +114,58 @@ public class MainActivity extends ActionBarActivity {
         Log.d("DEBUG", "SearchSite: " + mSF.getSearchSite());
     }
 
-    public void onImageSearch(View v) {
+    private String getSearchUrl() {
+        return getSearchUrl(0);
+    }
+
+    private String getSearchUrl(int start) {
         String imageColor = preferenceDialog.getSearchFilter().getImageColor();
         String imageSize = preferenceDialog.getSearchFilter().getImageSize();
         String imageType = preferenceDialog.getSearchFilter().getImageType();
         String searchSite = preferenceDialog.getSearchFilter().getSearchSite();
         String query = etQuery.getText().toString();
-        AsyncHttpClient client = new AsyncHttpClient();
 
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=" + query + "&rsz=8"
                 + "&imgsz=" + imageSize
                 + "&imgcolor=" + imageColor
                 + "&imgtype=" + imageType
-                + "&as_sitesearch=" + searchSite;
+                + "&as_sitesearch=" + searchSite
+                + "&start=" + start;
 
         Log.d("DEBUG", "Search URL: " + searchUrl);
+
+        return searchUrl;
+    }
+
+    private void searchMore(int start) {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        String searchUrl = getSearchUrl(start);
+
+        client.get(searchUrl, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    JSONArray imageResultJson = response.getJSONObject("responseData").getJSONArray("results");
+                    //imageResults.clear();   // clear previous search results
+                    aImageResults.addAll(ImageResult.fromJSONArray(imageResultJson));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideKeyBoard();
+                Log.d("DEBUG", "Search Result: " + imageResults.toString());
+            }
+        });
+    }
+    public void onImageSearch(View v) {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        String searchUrl = getSearchUrl();
+
         client.get(searchUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -135,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
                 }
 
                 hideKeyBoard();
-                Log.d("DEBUG", imageResults.toString());
+                Log.d("DEBUG", "Search Result: " + imageResults.toString());
             }
         });
     }
